@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //Mostrar icono. (El método esta mas abajo)
         this.enforceIconBar();
 
-
-
         this.listView = (ListView) findViewById(R.id.listView);
         //this.gridView = (GridView) findViewById(R.id.gridView);
 
