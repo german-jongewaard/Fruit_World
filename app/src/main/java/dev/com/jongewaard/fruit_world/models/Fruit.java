@@ -1,4 +1,4 @@
-package dev.com.jongewaard.fruit_world;
+package dev.com.jongewaard.fruit_world.models;
 
 /**
  * Created by german on 10-11-17.

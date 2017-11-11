@@ -1,4 +1,4 @@
-package dev.com.jongewaard.fruit_world;
+package dev.com.jongewaard.fruit_world.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +10,13 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import dev.com.jongewaard.fruit_world.R;
+import dev.com.jongewaard.fruit_world.models.Fruit;
+
+/**
+ * Created by german on 10-11-17.
+ */
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
