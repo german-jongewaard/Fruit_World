@@ -2,6 +2,7 @@ package dev.com.jongewaard.fruit_world.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+    // Diferenciamos entre las frutas conocidas y desconocidas
     private void clickFruit(Fruit fruit) {
         if(fruit.getOrigin().equals("Unknown"))
             Toast.makeText(this, "Sorry we don't have many info about " + fruit.getName(), Toast.LENGTH_SHORT).show();
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         inflater.inflate(R.menu.option_menu, menu);
         //Despues de inflado, recogemos las referencias de los botones que nos interesan.
         this.itemListView = menu.findItem(R.id.list_view);
-        this.itemGridView = menu.findItem(R.id.list_view);
+        this.itemGridView = menu.findItem(R.id.grid_view);
         return true;
     }
 
@@ -121,6 +123,32 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        //Inflamos el conext menu con nuestro layout
+        MenuInflater inflater = getMenuInflater();
+        //Antes de inflarlo le añadimos el Header, dependiendo del objeto que se pinche.
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        menu.setHeaderTitle(this.fruits.get(info.position).getName());
+        //Inflamos
+        inflater.inflate(R.menu.context_menu_fruit, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        //Obtener info en el context menu del objeto que se pinche.
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()){
+            case R.id.delete_fruit:
+                this.deleteFruit(info.position);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
     // Método para cambiar entre Grid/List view
     private void switchListGridView(int option) {
         // Método para cambiar entre Grid/List view
@@ -129,15 +157,41 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             if(this.listView.getVisibility() == View.INVISIBLE){
                 // ... escondemos el grid view, y enseñamos su botón en el menú de opciones
                 this.gridView.setVisibility(View.INVISIBLE);
+                //muestro el botón de GridView Visible en el menú del ActionBar!
+                this.itemGridView.setVisible(true);
+                // no olvidamos enseñar el list view, y esconder su botón en el menú de opciones
+                this.listView.setVisibility(View.VISIBLE);
+                //esconder su botón en el menú de opciones
+                this.itemListView.setVisible(false);
+            }
+        }else if(option == SWITCH_TO_GRID_VIEW) {
+            // Si queremos cambiar a grid view, y el grid view está en modo invisible...
+            if(this.gridView.getVisibility() == View.INVISIBLE){
+                // ... escondemos el list view, y enseñamos su botón en el menú de opciones
+                this.listView.setVisibility(View.INVISIBLE);
+                this.itemListView.setVisible(true);
+                // no olvidamos enseñar el grid view, y esconder su botón en el menú de opciones
+                this.gridView.setVisibility(View.VISIBLE);
+                this.itemGridView.setVisible(false);
 
             }
         }
+    }
 
+    // CRUD actions - Get, Add, Delete
 
+    private List<Fruit> getAllFruits(){
+        List<Fruit> list = new ArrayList<Fruit>(){{
 
-
-
-
+            add(new Fruit("Banana", R.mipmap.ic_banana, "Gran Canaria"));
+            add(new Fruit("Strawberry", R.mipmap.ic_strawberry, "Huelva"));
+            add(new Fruit("Orange", R.mipmap.ic_orange, "Sevilla"));
+            add(new Fruit("Apple", R.mipmap.ic_apple, "Madrid"));
+            add(new Fruit("Cherry", R.mipmap.ic_cherry, "Galicia"));
+            add(new Fruit("Pear", R.mipmap.ic_pear, "Zaragoza"));
+            add(new Fruit("Raspberry", R.mipmap.ic_raspberry, "Barcelona"));
+        }};
+        return list;
     }
 
     private void addFruit(Fruit fruit) {
@@ -147,13 +201,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         this.adapterGridView.notifyDataSetChanged();
     }
 
+    private void deleteFruit(int position) {
 
-    private List<Fruit> getAllFruits(){
-        List<Fruit> list = new ArrayList<Fruit>(){{
-
-            add(new Fruit("Banana", R.mipmap.ic_banana, "Gran Canaria"));
-
-        }};
-        return list;
+        this.fruits.remove(position);
+        //Avisamos del cambio en ambos adapters
+        this.adapterListView.notifyDataSetChanged();
+        this.adapterGridView.notifyDataSetChanged();
     }
+
 }

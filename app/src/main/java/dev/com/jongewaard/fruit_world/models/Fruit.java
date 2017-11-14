@@ -7,12 +7,12 @@ package dev.com.jongewaard.fruit_world.models;
 public class Fruit {
 
     private String name;
-    private int icono;
+    private int icon;
     private String origin;
 
-    public Fruit(String name, int icono, String origin) {
+    public Fruit(String name, int icon, String origin) {
         this.name = name;
-        this.icono = icono;
+        this.icon = icon;
         this.origin = origin;
     }
 
@@ -20,11 +20,13 @@ public class Fruit {
 
     public void setName(String name) {this.name = name;}
 
-    public int getIcono() {return icono;}
+    public int getIcon() {return icon;}
 
-    public void setIcono(int icono) {this.icono = icono;}
+    public void setIcon(int icon) {this.icon = icon;}
 
     public String getOrigin() {return origin;}
 
     public void setOrigin(String origin) {this.origin = origin;}
+
+
 }

@@ -60,19 +60,15 @@ public class FruitAdapter extends BaseAdapter {
             // Obtenemos la referencia que posteriormente pusimos dentro del convertView
             // Y así, reciclamos su uso sin necesidad de buscar de nuevo, referencias con FindViewById
             holder = (ViewHolder) convertView.getTag();
-
         }
 
         final Fruit currentFruit = (Fruit) getItem(position);
+        holder.name.setText(currentFruit.getName());
+        holder.origin.setText(currentFruit.getOrigin());
+        holder.icon.setImageResource(currentFruit.getIcon());
 
-
-
-
-
-
-
-        return null; }
-
+        return convertView;
+    }
 
         static class ViewHolder {
             private TextView name;
